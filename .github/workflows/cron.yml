@@ -1,0 +1,36 @@
+name: Update EEPROM ref
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        # Run on the latest minor release of Go 1.14:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Ensure all files were formatted as per gofmt
+      run: |
+        gofmt -l $(find . -name '*.go') >/dev/null
+
+    - name: Get dependencies
+      run: |
+        go get -u github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom
+
+    - name: Update EEPROM reference if newer EEPROM is available
+      run: |
+        gokr-pull-eeprom
