@@ -1,0 +1,39 @@
+name: Test Boot
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        # Run on the latest minor release of Go 1.14:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Ensure all files were formatted as per gofmt
+      run: |
+        gofmt -l $(find . -name '*.go') >/dev/null
+
+    - name: Test Boot
+      env:
+        GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+        GH_USER: ${{ secrets.GH_USER }}
+        GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+      if: ${{ env.GH_USER != 0 }}
+      # TODO: remove second go get (redundant)
+      run: |
+        go get -u github.com/gokrazy/autoupdate/cmd/... github.com/gokrazy/tools/cmd/gokr-packer
+        gokr-boot -require_label=please-boot -set_label=please-merge -bootery_url=$BOOTERY_URL
+	gokr-merge -require_label=please-merge
+        go get -u github.com/gokrazy/autoupdate/cmd/gokr-amend && gokr-amend -set_label=please-boot *.bin *.elf *.dat
