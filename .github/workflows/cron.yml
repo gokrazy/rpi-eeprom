@@ -29,7 +29,7 @@ jobs:
 
     - name: Get dependencies
       run: |
-        go get -u github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom
+        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom
 
     - name: Update EEPROM reference if newer EEPROM is available
       run: |
