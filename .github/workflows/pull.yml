@@ -25,24 +25,13 @@ jobs:
       run: |
         gofmt -l $(find . -name '*.go') >/dev/null
 
-    - name: Step that prints name of pull request's base branch
-      run: |
-        echo "Pull request's base branch is: ${BASE_BRANCH}"
-      env:
-        BASE_BRANCH: ${{ github.base_ref }}
-      if: github.event_name == 'pull_request'
-
-    - name: print pull_request info
-      run: |
-        echo "Pull request's base branch is: ${BASE_BRANCH}"
-      env:
-        BASE_BRANCH: ${{ github.event.pull_request.head.ref }}
-
     - name: Test Boot
       env:
         GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
         GH_USER: ${{ secrets.GH_USER }}
         GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+	TRAVIS_PULL_REQUEST: ${{ github.event.pull_request.number }}
+        TRAVIS_PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
       if: ${{ env.GH_USER != 0 }}
       # TODO: remove second go get (redundant)
       run: |
