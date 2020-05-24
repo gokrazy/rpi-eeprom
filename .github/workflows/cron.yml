@@ -28,6 +28,10 @@ jobs:
         gofmt -l $(find . -name '*.go') >/dev/null
 
     - name: Get dependencies
+      env:
+        GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+        GH_USER: ${{ secrets.GH_USER }}
+        GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
       run: |
         GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom
 
