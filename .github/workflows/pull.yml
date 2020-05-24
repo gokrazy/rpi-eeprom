@@ -35,7 +35,7 @@ jobs:
       if: ${{ env.GH_USER != 0 }}
       # TODO: remove second go get (redundant)
       run: |
-        go get -u github.com/gokrazy/autoupdate/cmd/... github.com/gokrazy/tools/cmd/gokr-packer
+        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/... github.com/gokrazy/tools/cmd/gokr-packer
         gokr-boot -require_label=please-boot -set_label=please-merge -bootery_url=$BOOTERY_URL
         gokr-merge -require_label=please-merge
-        go get -u github.com/gokrazy/autoupdate/cmd/gokr-amend && gokr-amend -set_label=please-boot *.bin *.elf *.dat
+        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/gokr-amend && gokr-amend -set_label=please-boot *.bin *.elf *.dat
