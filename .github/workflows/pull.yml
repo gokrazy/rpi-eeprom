@@ -32,7 +32,7 @@ jobs:
         GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
         TRAVIS_PULL_REQUEST: ${{ github.event.pull_request.number }}
         TRAVIS_PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
-	BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
+        BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
       if: ${{ env.GH_USER != 0 }}
       # TODO: remove second go get (redundant)
       run: |
