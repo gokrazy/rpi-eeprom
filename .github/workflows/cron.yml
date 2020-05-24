@@ -1,10 +1,9 @@
 name: Update EEPROM ref
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+    # daily, hour and minute chosen arbitrarily
+    - cron:  '8 3 * * *'
 
 jobs:
 
