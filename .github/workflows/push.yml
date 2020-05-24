@@ -27,5 +27,5 @@ jobs:
 
     - name: Get dependencies
       run: |
-        go install ./cmd/gokr-update-firmware
-        gokr-update-firmware
+        go install ./cmd/gokr-update-eeprom
+        gokr-update-eeprom
