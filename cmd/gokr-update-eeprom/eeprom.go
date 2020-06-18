@@ -11,9 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"context"
@@ -30,16 +28,6 @@ var (
 // Git commit hash of https://github.com/raspberrypi/rpi-eeprom to take EEPROM
 // updates from.
 const eepromRef = "fab8f9e7d80c17309aee6fcf695e43b9cf905fde"
-
-var gopath = mustGetGopath()
-
-func mustGetGopath() string {
-	gopathb, err := exec.Command("go", "env", "GOPATH").Output()
-	if err != nil {
-		log.Panic(err)
-	}
-	return strings.TrimSpace(string(gopathb))
-}
 
 type contentEntry struct {
 	Name        string `json:"name"`
@@ -89,14 +77,9 @@ func main() {
 		}
 	}
 
-	path := filepath.Join(gopath, "src", "github.com", "gokrazy", "rpi-eeprom")
-	var eepromFiles []string
-	for _, pattern := range []string{"*.bin"} {
-		files, err := filepath.Glob(filepath.Join(path, pattern))
-		if err != nil {
-			log.Fatal(err)
-		}
-		eepromFiles = append(eepromFiles, files...)
+	eepromFiles, err := filepath.Glob("*.bin")
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	log.Printf("eepromFiles = %v", eepromFiles)
@@ -184,5 +167,9 @@ func main() {
 	if err := deg.Wait(); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("TODO: remove left-over files: %v", firmwareHashes)
+	for leftover := range firmwareHashes {
+		if err := os.Remove(leftover); err != nil {
+			log.Fatalf("removing left-over file: %v", err)
+		}
+	}
 }
