@@ -29,7 +29,7 @@ var (
 
 // Git commit hash of https://github.com/raspberrypi/rpi-eeprom to take EEPROM
 // updates from.
-const eepromRef = "92ed6c634ab16245f042ab13ac8f55080b6253d6"
+const eepromRef = "fab8f9e7d80c17309aee6fcf695e43b9cf905fde"
 
 var gopath = mustGetGopath()
 
