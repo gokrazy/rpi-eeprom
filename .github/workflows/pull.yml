@@ -62,5 +62,5 @@ jobs:
         BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
       # TODO: remove second go get (redundant)
       run: |
-        { gokr-merge -require_label=please-merge; ret=$?; [ $ret -eq 2 ] || exit $ret; }
+        { set +e; gokr-merge -require_label=please-merge; ret=$?; [ $ret -eq 2 ] || exit $ret; }
 
