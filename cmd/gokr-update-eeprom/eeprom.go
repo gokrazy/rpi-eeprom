@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"context"
@@ -85,7 +86,10 @@ func main() {
 	log.Printf("eepromFiles = %v", eepromFiles)
 
 	// Calculate the git blob hash of each file
-	firmwareHashes := make(map[string]string, len(eepromFiles))
+	var (
+		firmwareHashesMu sync.Mutex
+		firmwareHashes   = make(map[string]string, len(eepromFiles))
+	)
 	var eg errgroup.Group
 	for _, path := range eepromFiles {
 		path := path // copy
@@ -107,6 +111,8 @@ func main() {
 				return err
 			}
 
+			firmwareHashesMu.Lock()
+			defer firmwareHashesMu.Unlock()
 			firmwareHashes[filepath.Base(path)] = fmt.Sprintf("%x", hash.Sum(nil))
 			return nil
 		})
