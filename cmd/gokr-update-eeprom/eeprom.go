@@ -28,7 +28,7 @@ var (
 
 // Git commit hash of https://github.com/raspberrypi/rpi-eeprom to take EEPROM
 // updates from.
-const eepromRef = "f19990103e4483ebb47be5ea897c134913f83ad8"
+const eepromRef = "7e6a961a2427ca3f5ab9c5f22a249a718b72e6b6"
 
 type contentEntry struct {
 	Name        string `json:"name"`
