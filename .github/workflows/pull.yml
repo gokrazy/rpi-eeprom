@@ -14,8 +14,8 @@ jobs:
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
-        # Run on the latest minor release of Go 1.14:
-        go-version: ^1.14
+        # Run on the latest minor release of Go 1.18:
+        go-version: ^1.18
       id: go
 
     - name: Check out code into the Go module directory
@@ -35,7 +35,8 @@ jobs:
         BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
       if: ${{ env.GH_USER != 0 }}
       run: |
-        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/... github.com/gokrazy/tools/cmd/gokr-packer
+        GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/...@latest
+        GOPROXY=direct go install github.com/gokrazy/tools/cmd/gokr-packer@latest
         gokr-boot -require_label=please-boot -set_label=please-merge -bootery_url=$BOOTERY_URL
 
     - name: Amend Pull Request
@@ -50,7 +51,7 @@ jobs:
       run: |
         go install ./cmd/gokr-update-eeprom
         gokr-update-eeprom
-        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/gokr-amend && gokr-amend -set_label=please-boot *.bin
+        GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/gokr-amend@latest && gokr-amend -set_label=please-boot *.bin
 
     - name: Merge if boot successful
       env:
@@ -60,7 +61,6 @@ jobs:
         TRAVIS_PULL_REQUEST: ${{ github.event.pull_request.number }}
         TRAVIS_PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
         BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
-      # TODO: remove second go get (redundant)
       run: |
         { set +e; gokr-merge -require_label=please-merge; ret=$?; [ $ret -eq 2 ] || exit $ret; }
 

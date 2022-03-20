@@ -15,8 +15,8 @@ jobs:
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
-        # Run on the latest minor release of Go 1.14:
-        go-version: ^1.14
+        # Run on the latest minor release of Go 1.18:
+        go-version: ^1.18
       id: go
 
     - name: Check out code into the Go module directory
@@ -28,7 +28,7 @@ jobs:
 
     - name: Get dependencies
       run: |
-        GOPROXY=direct go get -u github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom
+        GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/gokr-pull-eeprom@latest
 
     - name: Update EEPROM reference if newer EEPROM is available
       env:
