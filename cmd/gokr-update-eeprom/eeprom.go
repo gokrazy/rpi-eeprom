@@ -122,7 +122,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	contents, err := githubContents("https://api.github.com/repos/raspberrypi/rpi-eeprom/contents/firmware/stable?ref=" + eepromRef)
+	contents, err := githubContents("https://api.github.com/repos/raspberrypi/rpi-eeprom/contents/firmware-2711/latest?ref=" + eepromRef)
 	if err != nil {
 		log.Fatal(err)
 	}
