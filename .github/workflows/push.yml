@@ -27,5 +27,5 @@ jobs:
 
     - name: Get dependencies
       run: |
-        go install ./cmd/gokr-update-eeprom
+        GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/gokr-update-eeprom@latest
         gokr-update-eeprom

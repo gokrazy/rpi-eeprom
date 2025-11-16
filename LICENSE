@@ -1,7 +1,6 @@
 This license file covers the following files:
 
 * eeprom.go
-* cmd/gokr-update-eeprom/eeprom.go
 
 Copyright (c) 2017 the gokrazy authors. All rights reserved.
 

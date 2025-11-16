@@ -52,7 +52,7 @@ jobs:
         BOOTERY_URL: ${{ secrets.BOOTERY_URL }}
       if: ${{ env.GH_USER != 0 }}
       run: |
-        go install ./cmd/gokr-update-eeprom
+        GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/gokr-update-eeprom@latest
         gokr-update-eeprom
         GOPROXY=direct go install github.com/gokrazy/autoupdate/cmd/gokr-amend@latest && gokr-amend -set_label=please-boot *.bin
 
